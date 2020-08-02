@@ -6,159 +6,506 @@
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
 
   <!-- Bootstrap CSS -->
+  <link href="./css/dashboard.css" rel="stylesheet">
   <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" rel="stylesheet">
 
-  <title>COVID-19 Narrative Visualization :: Time Series Confirmed Cases | Deaths</title>
+  <title>COVID-19 in US - A Narrative Visualization :: Time Series Confirmed Cases | Deaths | Tests</title>
 </head>
 <body>
-<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#">COVID-19 Narrative Visualization</a>
-  <button aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation"
-          class="navbar-toggler position-absolute d-md-none collapsed" data-target="#sidebarMenu" data-toggle="collapse"
-          type="button">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-</nav>
+<div ng-app="DemoApp" ng-cloak ng-controller="DemoController">
+  <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#">COVID-19 in US :: A Narrative Visualization</a>
+    <button aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation"
+            class="navbar-toggler position-absolute d-md-none collapsed" data-target="#sidebarMenu"
+            data-toggle="collapse"
+            type="button">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </nav>
 
-<div class="container-fluid">
-  <div class="row">
-    <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse" id="sidebarMenu">
-      <div class="sidebar-sticky pt-3">
-        <ul class="nav flex-column">
-          <li class="nav-item">
-            <a class="nav-link active" href="#">
-              <span data-feather="home"></span>
-              Home <span class="sr-only">(current)</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              Cases
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              Deaths
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              Tests in US
-            </a>
-          </li>
-        </ul>
+  <div class="container-fluid">
+    <div class="row">
+      <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse" id="sidebarMenu"
+           style="min-height: calc(100vh - 50px);">
+        <div class="sidebar-sticky pt-3">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link" ng-class="{'active': view == 'overview'}" ng-click="changeView('overview')">
+                Overview
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" ng-class="{'active': view == 'cases'}" ng-click="changeView('cases')">
+                Cases
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" ng-class="{'active': view == 'deaths'}" ng-click="changeView('deaths')">
+                Deaths
+              </a>
+            </li>
 
-        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-          <span>Resources</span>
-        </h6>
-        <ul class="nav flex-column mb-2">
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              Credits
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              Technologies
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              Source Code
-            </a>
-          </li>
-        </ul>
-      </div>
-    </nav>
+          </ul>
 
-    <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Home</h1>
-        <div class="btn-toolbar mb-2 mb-md-0">
-          <div class="mr-2">
-            <span>Country/Region</span>
-            <select>
-              <optgroup label="">
-                <option>Global</option>
-              </optgroup>
-              <optgroup label="Regions">
-                <option>US</option>
-                <option>CN</option>
-                <option>IN</option>
-              </optgroup>
-
-            </select>
-          </div>
-          <div class="mr-2">
-            <button class="btn btn-sm btn-outline-secondary" type="button">All</button>
-            <button class="btn btn-sm btn-outline-secondary" type="button">Last 90</button>
-          </div>
-          <div class="mr-2">
-            <button class="btn btn-sm btn-outline-secondary" type="button">Bar</button>
-            <button class="btn btn-sm btn-outline-secondary" type="button">Line</button>
-          </div>
-          <div class="mr-2">
-            <button class="btn btn-sm btn-outline-secondary" type="button">Daily</button>
-            <button class="btn btn-sm btn-outline-secondary" type="button">Weekly</button>
-          </div>
-          <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button">
-            <span data-feather="calendar"></span>
-            This week
-          </button>
+          <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            <span>Resources</span>
+          </h6>
+          <ul class="nav flex-column mb-2">
+            <li class="nav-item">
+              <a class="nav-link" ng-class="{'active': view == 'Credits'}" ng-click="changeView('Credits')">
+                Credits
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" ng-class="{'active': view == 'Technologies'}" ng-click="changeView('Technologies')">
+                Technologies
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" ng-class="{'active': view == 'Code'}" ng-click="changeView('Code')">
+                Source Code
+              </a>
+            </li>
+          </ul>
         </div>
-      </div>
-      <canvas class="my-4 w-100" height="380" id="myChart1" width="900"></canvas>
+      </nav>
 
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Confirmed Cases</h1>
-        <div class="btn-toolbar mb-2 mb-md-0">
-          <div class="btn-group mr-2">
-            <button class="btn btn-sm btn-outline-secondary" type="button">Today</button>
-            <button class="btn btn-sm btn-outline-secondary" type="button">Week</button>
+      <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+        <div class="">
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <div class="btn-toolbar mb-5 mb-md-0">
+              <button class="btn btn-sm btn-outline-secondary no-wrap" ng-class="{active: view !== 'overview'}"
+                      ng-click="goBack()" type="button">Previous
+              </button>
+            </div>
+
+            <div class="btn-toolbar mb-5 mb-md-0">
+              <button class="btn btn-sm btn-outline-secondary no-wrap" ng-class="{active: view !== 'deaths'}"
+                      ng-click="goNext()" type="button">Next
+              </button>
+            </div>
           </div>
-          <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button">
-            <span data-feather="calendar"></span>
-            This week
-          </button>
         </div>
-      </div>
-      <canvas class="my-4 w-100" height="380" id="myChart2" width="900"></canvas>
-
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Deaths</h1>
-        <div class="btn-toolbar mb-2 mb-md-0">
-          <div class="btn-group mr-2">
-            <button class="btn btn-sm btn-outline-secondary" type="button">Today</button>
-            <button class="btn btn-sm btn-outline-secondary" type="button">Week</button>
+        <div class="" ng-if="view == 'overview'">
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Overview</h1>
+            <span ng-if="loading">Loading...</span>
           </div>
-          <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button">
-            <span data-feather="calendar"></span>
-            This week
-          </button>
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon3">Select State</span>
+              </div>
+              <!--                <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">-->
+              <select ng-change="selectRegion(selectedRegion)" ng-model="selectedRegion"
+                      ng-options="region for region in regions">
+              </select>
+            </div>
+            <div class="btn-toolbar mb-5 mb-md-0">
+
+              <div class="btn-group mr-2">
+                <button class="btn btn-sm btn-outline-secondary no-wrap" ng-class="{active: selectedPeriod == '90'}"
+                        ng-click="changePeriod('90')" type="button">90-Days
+                </button>
+                <button class="btn btn-sm btn-outline-secondary" ng-class="{active: selectedPeriod == '-1'}"
+                        ng-click="changePeriod('-1')" type="button">All
+                </button>
+              </div>
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-lg-6 col-xl">
+              <!-- Value  -->
+              <div class="card">
+                <div class="card-body">
+                  <div class="row align-items-center">
+                    <div class="col">
+                      <!-- Title -->
+                      <h6 class="text-uppercase text-muted mb-2">
+                        Total Tests
+                      </h6>
+                      <!-- Heading -->
+                      <span class="h2 mb-0">
+                      {{overviewData.total.toLocaleString()}}
+                    </span>
+                    </div>
+                  </div> <!-- / .row -->
+                </div>
+              </div>
+
+            </div>
+            <div class="col-12 col-lg-6 col-xl">
+
+              <!-- Hours -->
+              <div class="card">
+                <div class="card-body">
+                  <div class="row align-items-center">
+                    <div class="col">
+
+                      <!-- Title -->
+                      <h6 class="text-uppercase text-muted mb-2">
+                        Total Positive
+                      </h6>
+
+                      <!-- Heading -->
+                      <span class="h2 mb-0">
+                      {{overviewData.totalPositive.toLocaleString()}}
+                    </span>
+                    </div>
+                  </div> <!-- / .row -->
+                </div>
+              </div>
+
+            </div>
+            <div class="col-12 col-lg-6 col-xl">
+
+              <!-- Exit -->
+              <div class="card">
+                <div class="card-body">
+                  <div class="row align-items-center">
+                    <div class="col">
+
+                      <!-- Title -->
+                      <h6 class="text-uppercase text-muted mb-2">
+                        Total Deaths
+                      </h6>
+
+                      <!-- Heading -->
+                      <span class="h2 mb-0">
+                      {{overviewData.totalDeaths.toLocaleString()}}
+                    </span>
+
+                    </div>
+                  </div> <!-- / .row -->
+                </div>
+              </div>
+
+            </div>
+            <div class="col-12 col-lg-6 col-xl">
+
+              <!-- Time -->
+              <div class="card">
+                <div class="card-body">
+                  <div class="row align-items-center">
+                    <div class="col">
+
+                      <!-- Title -->
+                      <h6 class="text-uppercase text-muted mb-2">
+                        Total Hospitalized
+                      </h6>
+
+                      <!-- Heading -->
+                      <span class="h2 mb-0">
+                      {{overviewData.totalHospitalized.toLocaleString()}}
+                    </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="my-4 w-100" id="overviewChart" style="height:480px;" width="100%"></div>
+
+          <div class="my-4 w-100 narration-block">
+            <div class="blockquote" style="font-size: 16px">
+              <h5>Series of event overview</h5>
+              <p>
+                <b>Coronavirus disease 2019 (COVID-19)</b>, Is first identied in december 2019 in Wuhan, Hubei, China.
+                Later in Jan it was identified as new outbreak.
+              </p>
+              <p>
+                First case in US was identified on <i>Jan 21</i>, in a man from Washington. Later in a week first US
+                citizen was reported dead in China.
+              </p>
+              <p>
+                After a month, a first person recorded dead in US. in another month, on March 9th cases toll raised to
+                <i>500</i> in US.
+              </p>
+              <p><i>March 19</i>, Coronavirus cases in New York State, the hardest-hit in the U.S., surpassed 10,000.
+              </p>
+              <p><i>March 24</i>, Coronavirus cases topped 50,000 in the U.S., with 637 deaths nationwide.</p>
+              <p><i>March 26</i>, Deaths in the U.S. passed 1,000, as confirmed cases nationwide rose to more than
+                68,100.</p>
+              <p><i>April 03</i>, Death toll in the U.S. climbed to more than 7,000, as the number of confirmed cases
+                nationwide rose to more than 275,500.</p>
+              <p><i>April 28</i>, More than 700,000 people in the United States have tested positive for coronavirus.
+                The U.S. leads all countries in reported deaths with 36,734.</p>
+              <p><i>July 16</i>, Most Cases in a day reported and counts growing.</p>
+              </p>
+              <p style="font-size: 11px; text-align: right">Credits, Events from: <a
+                      href="https://www.nbcnews.com/health/health-news/coronavirus-timeline-tracking-critical-moments-covid-19-n1154341"
+                      target="_blank">https://www.nbcnews.com/health/health-news/coronavirus-timeline-tracking-critical-moments-covid-19-n1154341</a>
+              </p>
+            </div>
+          </div>
+
         </div>
-      </div>
 
-      <canvas class="my-4 w-100" height="380" id="myChart3" width="900"></canvas>
+        <div class="" ng-if="view == 'cases'">
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Confirmed Cases</h1>
+            <span ng-if="loading">Loading...</span>
+          </div>
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon3">Select State</span>
+              </div>
+              <!--                <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">-->
+              <select ng-change="selectRegion(selectedRegion)" ng-model="selectedRegion"
+                      ng-options="region for region in regions">
+              </select>
+            </div>
+            <div class="btn-toolbar mb-5 mb-md-0">
 
-      <h2>Data Source</h2>
-      <div class="table-responsive">
-        <panel>Data Source Info comes here.</panel>
-      </div>
-    </main>
+              <div class="btn-group mr-2">
+                <button class="btn btn-sm btn-outline-secondary no-wrap" ng-class="{active: selectedPeriod == '90'}"
+                        ng-click="changePeriod('90')" type="button">90-Days
+                </button>
+                <button class="btn btn-sm btn-outline-secondary" ng-class="{active: selectedPeriod == '-1'}"
+                        ng-click="changePeriod('-1')" type="button">All
+                </button>
+              </div>
+
+            </div>
+            <div class="btn-toolbar mb-5 mb-md-0">
+
+
+              <div class="btn-group mr-2">
+                <button class="btn btn-sm btn-outline-secondary" ng-class="{active: selectedInterval == 'daily'}"
+                        ng-click="changeInterval('daily')" type="button">Daily
+                </button>
+                <button class="btn btn-sm btn-outline-secondary" ng-class="{active: selectedInterval == 'weekly'}"
+                        ng-click="changeInterval('weekly')" type="button">Weekly
+                </button>
+              </div>
+
+
+            </div>
+            <div class="btn-toolbar mb-5 mb-md-0">
+
+              <div class="btn-group mr-2">
+                <button class="btn btn-sm btn-outline-secondary" ng-class="{active: selectedCountType == 'daily'}"
+                        ng-click="changeCountType('daily')" type="button">Day
+                </button>
+                <button class="btn btn-sm btn-outline-secondary" ng-class="{active: selectedCountType == 'cummulative'}"
+                        ng-click="changeCountType('cummulative')" type="button">Cummulative
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="my-4 w-100" id="casesChart" style="height:480px;" width="100%"></div>
+
+          <div class="my-4 w-100 narration-block">
+            <div class="blockquote" style="font-size: 16px">
+              <h5>Series of Events</h5>
+              <p><i>Jan 21</i>, The United States announced its first confirmed coronavirus case — a man in his 30s in
+                Washington state.</p>
+              <p><i>Feb 11</i>, WHO announced that the disease caused by the new coronavirus will be known by the
+                official name of COVID-19.</p>
+              <p><i>Feb 24</i>, The U.S. stock market plummeted over coronavirus fears, after the Dow Jones Industrial
+                Average experienced the worst day in two years.</p>
+              <p><i>Feb 26</i>, California announced the first case in the U.S. with no clear source of exposure.</p>
+              <p><i>Mar 06</i>, Vice President Mike Pence announced that 21 people aboard the Grand Princess, a cruise
+                ship being held off the coast of California, tested positive for the coronavirus.</p>
+              <p><i>Mar 08</i>, Confirmed cases in the U.S. topped 500.</p>
+              <p><i>Mar 11</i>, President Trump announced a new restriction on many foreign travelers from 26 countries
+                in Europe, except for Ireland and the United Kingdom, for the next 30 days.</p>
+              <p><i>Mar 13</i>, Trump declared a national state of emergency that could free up $50 billion to help
+                fight the pandemic.</p>
+              <p><i>Mar 15</i>, Twenty-nine additional states, including New York, Massachusetts, South Carolina and
+                Hawaii, announced school closures.</p>
+              <p><i>Mar 19</i>, California issued a statewide stay-at-home order asking residents to only leave the
+                house if necessary.</p>
+              <p><i>Mar 20</i>, New York Mayor Bill de Blasio said the nation's largest city is “now the epicenter of
+                this crisis” in the U.S., with 5,151 coronavirus cases and 29 deaths.</p>
+              <p><i>Mar 21</i>, Coronavirus cases in New York State, the hardest-hit in the U.S., surpassed 10,000.</p>
+              <p><i>Mar 23</i>, New York Gov. Andrew Cuomo announced the state will begin three studies of potential
+                coronavirus treatments in the coming week, as the state’s number of confirmed cases grew to more than
+                20,000.</p>
+              <p><i>Mar 24</i>, Coronavirus cases topped 50,000 in the U.S.</p>
+              <p><i>Mar 27</i>, Coronavirus cases in the U.S. surpassed 100,000, the most in the world. More than 1,500
+                deaths were also reported nationwide.</p>
+              <p><i>Mar 28</i>, The U.S. death toll surpassed 2,000, as the number of cases nationwide rose to more than
+                102,000.</p>
+              <p><i>Apr 16</i>, President Donald Trump announced new federal guidelines for reopening the U.S. that puts
+                the onus on governors for making decisions about their own state economies.</p>
+              <p><i>Apr 28</i>, Coronavirus cases in New York State, the hardest-hit in the U.S., surpassed 10,000.</p>
+              <p><i>Jul 16</i>, More than 700,000 people in the United States have tested positive for coronavirus. The
+                U.S. leads all countries in reported deaths with 36,734.</p>
+              <p><i>July 16</i>, Most Cases in a day reported and counts growing.</p>
+              </p>
+              <p style="font-size: 11px; text-align: right">Credits, Events from: <a
+                      href="https://www.nbcnews.com/health/health-news/coronavirus-timeline-tracking-critical-moments-covid-19-n1154341"
+                      target="_blank">https://www.nbcnews.com/health/health-news/coronavirus-timeline-tracking-critical-moments-covid-19-n1154341</a>
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="" ng-if="view == 'deaths'">
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Deaths</h1>
+            <span ng-if="loading">Loading...</span>
+          </div>
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon3">Select State</span>
+              </div>
+              <!--                <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">-->
+              <select ng-change="selectRegion(selectedRegion)" ng-model="selectedRegion"
+                      ng-options="region for region in regions">
+              </select>
+            </div>
+            <div class="btn-toolbar mb-5 mb-md-0">
+
+              <div class="btn-group mr-2">
+                <button class="btn btn-sm btn-outline-secondary no-wrap" ng-class="{active: selectedPeriod == '90'}"
+                        ng-click="changePeriod('90')" type="button">90-Days
+                </button>
+                <button class="btn btn-sm btn-outline-secondary" ng-class="{active: selectedPeriod == '-1'}"
+                        ng-click="changePeriod('-1')" type="button">All
+                </button>
+              </div>
+
+            </div>
+            <div class="btn-toolbar mb-5 mb-md-0">
+
+
+              <div class="btn-group mr-2">
+                <button class="btn btn-sm btn-outline-secondary" ng-class="{active: selectedInterval == 'daily'}"
+                        ng-click="changeInterval('daily')" type="button">Daily
+                </button>
+                <button class="btn btn-sm btn-outline-secondary" ng-class="{active: selectedInterval == 'weekly'}"
+                        ng-click="changeInterval('weekly')" type="button">Weekly
+                </button>
+              </div>
+
+
+            </div>
+            <div class="btn-toolbar mb-5 mb-md-0">
+
+              <div class="btn-group mr-2">
+                <button class="btn btn-sm btn-outline-secondary" ng-class="{active: selectedCountType == 'daily'}"
+                        ng-click="changeCountType('daily')" type="button">Day
+                </button>
+                <button class="btn btn-sm btn-outline-secondary" ng-class="{active: selectedCountType == 'cummulative'}"
+                        ng-click="changeCountType('cummulative')" type="button">Cummulative
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="my-4 w-100" id="deathsChart" style="height:480px;" width="100%"></div>
+
+          <div class="my-4 w-100 narration-block">
+            <div class="blockquote" style="font-size: 16px">
+              <h5>Series of Events</h5>
+              <p><i>Jan 21</i>, The United States announced its first confirmed coronavirus case — a man in his 30s in
+                Washington state.</p>
+              <p><i>Feb 26</i>, California announced the first case in the U.S. with no clear source of exposure.</p>
+              <p><i>Mar 19</i>, California issued a statewide stay-at-home order asking residents to only leave the
+                house if necessary.</p>
+              <p><i>Mar 24</i>, Coronavirus cases topped 50,000 in the U.S., with 637 deaths nationwide.</p>
+              <p><i>Mar 26</i>, Deaths in the U.S. passed 1,000, as confirmed cases nationwide rose to more than 68,100.
+              </p>
+              <p><i>Mar 27</i>, Coronavirus cases in the U.S. surpassed 100,000, the most in the world. More than 1,500
+                deaths were also reported nationwide.</p>
+              <p><i>Mar 28</i>, The U.S. death toll surpassed 2,000, as the number of cases nationwide rose to more than
+                102,000.</p>
+              <p><i>Apr 02</i>, Deaths in New York surpassed 2,000, while confirmed cases rose to 92,381.</p>
+              <p><i>Apr 03</i>, Death toll in the U.S. climbed to more than 7,000, as the number of confirmed cases
+                nationwide rose to more than 275,500.</p>
+              <p><i>Apr 06</i>, The coronavirus death toll in the U.S. surged past 10,000.</p>
+              <p><i>Apr 11</i>, Coronavirus deaths in the United States passed the 20,000 mark.</p>
+              <p><i>Apr 16</i>, President Donald Trump announced new federal guidelines for reopening the U.S. that puts
+                the onus on governors for making decisions about their own state economies.</p>
+              <p><i>Apr 17</i>, Most deaths in a day reported.</p>
+              </p>
+              <p style="font-size: 11px; text-align: right">Credits, Events from: <a
+                      href="https://www.nbcnews.com/health/health-news/coronavirus-timeline-tracking-critical-moments-covid-19-n1154341"
+                      target="_blank">https://www.nbcnews.com/health/health-news/coronavirus-timeline-tracking-critical-moments-covid-19-n1154341</a>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="" ng-if="view == 'Credits'">
+          <h2>Credits</h2>
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <div class="table-responsive">
+              <p>
+              <h5>Cases & Death information</h5>
+              <a href="https://github.com/CSSEGISandData/COVID-19" target="_blank">https://github.com/CSSEGISandData/COVID-19</a>
+              <br/>
+              <br/>
+              <h5>Hospitalization & Test information</h5>
+              <a href="https://covidtracking.com/data" target="_blank">https://covidtracking.com/data</a>
+              <br/><br/>
+              <h5>Events</h5>
+              <a href="https://www.nbcnews.com/health/health-news/coronavirus-timeline-tracking-critical-moments-covid-19-n1154341"
+                 target="_blank">
+                https://www.nbcnews.com/health/health-news/coronavirus-timeline-tracking-critical-moments-covid-19-n1154341
+              </a>
+
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="" ng-if="view == 'Technologies'">
+          <h2>Technologies Used</h2>
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <div class="table-responsive">
+              <p>
+                <a href="https://developer.mozilla.org/en-US/docs/Web/HTML" target="_blank">HTML/CSS</a>&nbsp;&nbsp;&nbsp;
+                <a href="https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web/JavaScript_basics"
+                   target="_blank">Javascript</a>&nbsp;&nbsp;&nbsp;
+                <a href="http://d3.org/" target="_blank">D3.js</a>&nbsp;&nbsp;&nbsp;
+                <a href="https://angularjs.org/" target="_blank">AngularJS</a>&nbsp;&nbsp;&nbsp;
+                <a href="https://getbootstrap.com/" target="_blank">Bootstrap</a>&nbsp;&nbsp;&nbsp;
+                <a href="https://lodash.com/  " target="_blank">Lodash</a>&nbsp;&nbsp;&nbsp;
+                <a href="https://momentjs.com/" target="_blank">moment.js</a>&nbsp;&nbsp;&nbsp;
+                <a href="https://jquery.com/" target="_blank">Jquery</a>&nbsp;&nbsp;&nbsp;
+                <a href="https://github.com/" target="_blank">github.io</a>&nbsp;&nbsp;&nbsp;
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="" ng-if="view == 'Code'">
+          <h2>Source Code Links</h2>
+          <div class="table-responsive">
+            <a href="https://github.com/sbitra2/cs-498-dv-narrative-visualization">https://github.com/sbitra2/cs-498-dv-narrative-visualization</a>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+  <div class="timeline-tooltip">
+
   </div>
 </div>
 
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.19/lodash.core.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.19/lodash.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment-with-locales.min.js"></script>
 <script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="https://d3js.org/d3-time.v1.min.js"></script>
+<script src="https://d3js.org/d3-time-format.v2.min.js"></script>
+<script src="https://d3js.org/d3-fetch.v1.min.js"></script>
 <script crossorigin="anonymous" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script crossorigin="anonymous" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <script crossorigin="anonymous" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
         src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script src="https://code.angularjs.org/1.6.9/angular.js"></script>
 
 <script src="js/app.js"></script>
 

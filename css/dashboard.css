@@ -101,3 +101,97 @@ body {
   border-color: transparent;
   box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
 }
+
+:root {
+  --var-color-grey: #898989;
+}
+
+body {
+  margin: 0;
+  /*position:fixed;*/
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  font-family: Helvetica;;
+}
+
+text {
+  font-family: Helvetica;
+  color: var(--var-color-grey);
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: var(--var-color-grey);
+  shape-rendering: crispEdges;
+}
+
+.xAxis {
+  font-size: 15px;
+}
+
+.yAxis {
+  font-size: 12px;
+}
+
+.bar {
+  cursor: pointer;
+}
+
+.timeline-tooltip {
+  position: absolute;
+}
+
+.timeline-tooltip > div > div {
+  max-height: 300px;
+  width: fit-content;
+  overflow-y: auto;
+}
+
+.timeline-tooltip .annotation-blk {
+  width: 400px !important;
+}
+
+.timeline-tooltip .tooltip-blk {
+  width: 200px !important;
+}
+
+div.label-header {
+  font-size: 14px;
+}
+
+div.label-val {
+  color: #666;
+  font-size: 12px;
+}
+
+.no-wrap {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+path {
+  stroke: steelblue;
+  stroke-width: 2;
+  fill: none;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: grey;
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+
+ul.stepper-horizontal {
+  display: block;
+  width: 100%;
+}
+
+ul.stepper-horizontal li {
+  display: inline-block;
+  width: 30%;
+}
