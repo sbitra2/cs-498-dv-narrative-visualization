@@ -291,7 +291,6 @@ app.controller('DemoController', function ($scope, $timeout) {
       $scope.calculatedTestsAvailable = _.chain(scopeGroupedData).groupBy('Province_State').value();
 
       $scope.calculatedTestsAvailable['All US'] = _.flatten(_.values($scope.calculatedTestsAvailable));
-      debugger;
       let latestDate = date_columns[date_columns.length - 1];
       $scope.overviewData = {
         "total": ((d) => {
@@ -549,7 +548,6 @@ app.controller('DemoController', function ($scope, $timeout) {
             })
           }
         });
-        debugger;
         data = _data_;
       }
 
