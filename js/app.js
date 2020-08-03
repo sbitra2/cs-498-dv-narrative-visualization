@@ -194,7 +194,7 @@ app.controller('DemoController', function ($scope, $timeout) {
   $scope.init();
 
   $scope.changeView = (view) => {
-    $('.timeline-tooltip').html('')
+    d3.select('.timeline-tooltip').html("");
     $scope.view = view;
     $scope.getOptions();
     $timeout(() => {
@@ -1039,7 +1039,7 @@ let createLineChart = (container, data, showMax, options) => {
     .attr("dx", "-10.35em")
     .attr("text-anchor", "end")
     .style("fill", "steelblue")
-    .text("Currently Hostpitalized");
+    .text("   Hostpitalized");
 
 
   svg.append("text")
@@ -1048,7 +1048,7 @@ let createLineChart = (container, data, showMax, options) => {
     .attr("dx", "-1.35em")
     .attr("text-anchor", "end")
     .style("fill", "slategray")
-    .text("Currently In ICU");
+    .text("Patients In ICU");
 
 
   svg.append("text")
@@ -1057,7 +1057,7 @@ let createLineChart = (container, data, showMax, options) => {
     .attr("dx", "-10.35em")
     .attr("text-anchor", "end")
     .style("fill", "orange")
-    .text("Currently on Ventilator");
+    .text("Patients On Ventilator");
 
 
   svg.append("text")
